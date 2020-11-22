@@ -1,16 +1,11 @@
 const express = require('express');
 const {spawn} = require('child_process');
+const {giveData} = require('./utils/giveSingleData');
+const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 8081;
 
-var allowCrossDomain = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', "*");
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-}
-
-app.use(allowCrossDomain);
+app.use(cors());
 
 app.get('/', (req, res)=>{
     const python = spawn('python', ['sample.py', "shriyam", 'tripathi']);
@@ -21,6 +16,15 @@ app.get('/', (req, res)=>{
             body: data.toString()
         })
     });
+});
+
+app.get('/getCompanyData/:company/:code/daily', async (req, res)=>{
+    console.log(req.params);
+let data = await giveData(`https://www.moneycontrol.com/technical-analysis/${req.params.company}/${req.params.code}/daily`);
+res.json({
+    msg: "Data received",
+    data
+})
 })
 
 app.listen(PORT, ()=>{
