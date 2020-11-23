@@ -7,6 +7,7 @@ async function giveData(link){
     const $ = cheerio.load(res.data);
     let data =[];
     let table = $(`.mtindi.FR #techindd .mt20 tbody`).eq(1).find("tr");
+    let companyName = $(`h1.pcstname`).eq(0).text().trim();
     table.each((index, el)=>{
         let tempdata = {
             period: $(el).find("td").eq(0).text().trim(),
@@ -15,7 +16,10 @@ async function giveData(link){
         };
         data.push(tempdata);
     })
-    return data;
+    return {
+      data,
+      name: companyName
+    };
   } catch (e) {
     return null;
   }

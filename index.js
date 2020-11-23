@@ -19,12 +19,12 @@ app.get('/', (req, res)=>{
 });
 
 app.get('/getCompanyData/:company/:code/daily', async (req, res)=>{
-    console.log(req.params);
-let data = await giveData(`https://www.moneycontrol.com/technical-analysis/${req.params.company}/${req.params.code}/daily`);
-res.json({
-    msg: "Data received",
-    data
-})
+    let data = await giveData(`https://www.moneycontrol.com/technical-analysis/${req.params.company}/${req.params.code}/daily`);
+    res.json({
+        msg: "Data received",
+        name: data.name,
+        data: data.data
+    })
 })
 
 app.listen(PORT, ()=>{
