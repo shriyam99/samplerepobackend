@@ -43,10 +43,10 @@ async function giveStocks(){
             let table = $(el).find(`#maNSE tbody tr`);
             table.each((i, element)=>{
                 let tempdata = {
-                    company: $(element).find("td").eq(0).text().trim(),
+                    index: $(element).find("td").eq(0).text().trim(),
                     price: $(element).find("td").eq(1).text().trim(),
                     change: $(element).find("td").eq(2).text().trim(),
-                    value: $(element).find("td").eq(3).text().trim()
+                    percentageChange: $(element).find("td").eq(3).text().trim()
                 };
                 mostActiveData.push(tempdata);
             });
@@ -55,10 +55,10 @@ async function giveStocks(){
             let table = $(el).find('#tgNifty tbody tr');
             table.each((i, element)=>{
                 let tempdata = {
-                    company: $(element).find("td").eq(0).text().trim(),
+                    index: $(element).find("td").eq(0).text().trim(),
                     price: $(element).find("td").eq(1).text().trim(),
                     change: $(element).find("td").eq(2).text().trim(),
-                    percentageGain: $(element).find("td").eq(3).text().trim()
+                    percentageChange: $(element).find("td").eq(3).text().trim()
                 };
                 topGainersData.push(tempdata);
             });
@@ -67,10 +67,10 @@ async function giveStocks(){
             let table = $(el).find('#tlNifty tbody tr');
             table.each((i, element)=>{
                 let tempdata = {
-                    company: $(element).find("td").eq(0).text().trim(),
+                    index: $(element).find("td").eq(0).text().trim(),
                     price: $(element).find("td").eq(1).text().trim(),
                     change: $(element).find("td").eq(2).text().trim(),
-                    percentageLoss: $(element).find("td").eq(3).text().trim()
+                    percentageChange: $(element).find("td").eq(3).text().trim()
                 };
                 topLosersData.push(tempdata);
             });
@@ -82,7 +82,7 @@ async function giveStocks(){
             let table = $(el).find(`#keymactb1 tbody tr`);
             table.each((i, element)=>{
                 let tempdata = {
-                    commodity: $(element).find("td").eq(0).text().trim(),
+                    index: $(element).find("td").eq(0).text().trim(),
                     price: $(element).find("td").eq(1).text().trim(),
                     change: $(element).find("td").eq(3).text().trim(),
                     percentageChange: $(element).find("td").eq(4).text().trim()
@@ -94,7 +94,7 @@ async function giveStocks(){
             let table = $(el).find(`tbody tr`);
             table.each((i, element)=>{
                 let tempdata = {
-                    currency: $(element).find("td").eq(0).text().trim(),
+                    index: $(element).find("td").eq(0).text().trim(),
                     price: $(element).find("td").eq(1).text().trim(),
                     change: $(element).find("td").eq(2).text().trim(),
                     percentageChange: $(element).find("td").eq(3).text().trim()
