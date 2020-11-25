@@ -21,7 +21,10 @@ async function giveData(link){
       name: companyName
     };
   } catch (e) {
-    return null;
+    return {
+      msg: "Something went wrong",
+      err: e
+    };
   }
 }
 

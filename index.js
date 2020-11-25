@@ -1,6 +1,8 @@
 const express = require('express');
 const {spawn} = require('child_process');
 const {giveData} = require('./utils/giveSingleData');
+const {giveStocks} = require('./utils/getStockData');
+const {giveAnalysis} = require('./utils/getAnalysis');
 const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 8081;
@@ -25,6 +27,16 @@ app.get('/getCompanyData/:company/:code/daily', async (req, res)=>{
         name: data.name,
         data: data.data
     })
+});
+
+app.get('/getStockData', async (req, res)=>{
+    let data = await giveStocks();
+    res.json(data);
+});
+
+app.get('/getAnalysis/:company/:code', async (req, res)=>{
+    let data = await giveAnalysis(`https://www.moneycontrol.com/swot-analysis/${req.params.company}/${req.params.code}/`);
+    res.json(data);
 })
 
 app.listen(PORT, ()=>{
