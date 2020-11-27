@@ -1,1 +1,8 @@
-print("Tata Consultancy Services Ltd. : 95% , Reliance Industries Ltd. : 91% , HDFC Bank Ltd. : 70% , ITC Ltd. : 59% \n\n")
+import sys
+import json
+sampleDict = {
+    "price": sys.argv[1],
+    "time": sys.argv[2]
+}
+jsonData = json.dumps(sampleDict)
+print(jsonData)

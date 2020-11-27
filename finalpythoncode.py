@@ -15,7 +15,7 @@ from newspaper import Article
 import pickle
 
 import tensorflow as tf
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import datetime as dt
 from datetime import datetime
 

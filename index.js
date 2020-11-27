@@ -5,13 +5,15 @@ const {giveStocks} = require('./utils/getStockData');
 const {giveAnalysis} = require('./utils/getAnalysis');
 const {giveNews} = require('./utils/getNews');
 const cors = require('cors');
+const bodyparser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT || 8081;
 
 app.use(cors());
+app.use(bodyparser.json());
 
-app.get('/', (req, res)=>{
-    const python = spawn('python', ['sample.py', "shriyam", 'tripathi']);
+app.post('/', (req, res)=>{
+    const python = spawn('python', ['sample.py', req.body.price, req.body.time]);
     python.stdout.on('data', (data)=>{
         console.log('Data from python:: ');
         console.log(data.toString());
