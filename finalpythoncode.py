@@ -38,6 +38,12 @@ from tensorflow.keras.optimizers import Adam
 #duration=int(0)
 #amount=int(0)
 
+class my_dictionary(dict):
+    def __init__(self):
+        self = dict()
+    def add(self, key, value):
+        self[key] = value
+
 def para(duration, amount):
     f = open('companies.json',)
     s = open('companies1.json',)
@@ -278,74 +284,23 @@ def para(duration, amount):
         PREDICTION_TRAIN.index = PREDICTION_TRAIN.index.to_series().apply(datetime_to_timestamp)
 
         #PREDICTION_TRAIN.head(3)
-
-
-
         DF_pred.append(PREDICTIONS_FUTURE)
 
-<<<<<<< HEAD
 
-    # class my_dictionary(dict):
-    #     def __init__(self):
-    #         self = dict()
 
-    #     def add(self, key, value):
-    #         self[key] = value
-
-    # resData = my_dictionary()
+    resData = my_dictionary()
 
     for i in range(0, len(DF_pred)):
-        # resData.add(str(tickers[i]), str(DF_pred[i]))
-        print(tickers[i])
-        print("\n\n")
-        print(DF_pred[i])
-        print("\n")
-        print("-"*45)
-
-    print("duration =", duration)
-    print("amount = ", amount)
+        resData.add(tickers[i], DF_pred[i].to_json())
+        # print(tickers[i])
+        # print("\n\n")
+        # print(DF_pred[i])
+        # print("\n")
+        # print("-"*45)
     # print(resData)
-    # json_object = json.dumps(resData, indent = 4)
-    # with open("sample.json", "w") as outfile:
-    #     outfile.write(json_object)
+    json_object = json.dumps(resData, indent = 4)
+    with open("datafile.json", "w") as outfile:
+        outfile.write(json_object)
 
-    fl = 'new.json'
-    if os.path.exists(fl):
-        os.remove(fl)
-
-
-
-    fileobj = open("new.json", 'w')
-
-    for i in range(0, len(DF_pred)):
-        js = DF_pred[i].to_json()
-        dict = {tickers[i]: js}
-        js_obj = json.dumps(dict, indent=4)
-        print(js_obj)
-        fileobj.write(js_obj)
-
-
-
-
-    fileobj.close()
-=======
-class my_dictionary(dict):
-    def __init__(self):
-        self = dict()
-    def add(self, key, value):
-        self[key] = value
-
-resData = my_dictionary()
-
-for i in range(0, len(DF_pred)):
-    resData.add(tickers[i], DF_pred[i].to_json())
-    # print(tickers[i])
-    # print("\n\n")
-    # print(DF_pred[i])
-    # print("\n")
-    # print("-"*45)
-print(resData)
-json_object = json.dumps(resData, indent = 4)
-with open("datafile.json", "w") as outfile:
-    outfile.write(json_object)
->>>>>>> 873a29c2b9cdea121821728cbbabd3e10700835f
+# if __name__ == "__main__":
+#     para(123, 456)
