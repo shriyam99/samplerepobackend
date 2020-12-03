@@ -180,7 +180,7 @@ for tick in ytickers:
 
     ms = yf.Ticker(tick)
 
-    dataset_train = ms.history(start="2017-01-01", end="2020-11-01")
+    dataset_train = ms.history(start="2017-01-01", end="2020-11-27")
     dataset_train.drop(['Dividends', 'Stock Splits'], axis=1)
     dataset_train.reset_index(inplace=True)
 
@@ -276,14 +276,26 @@ for tick in ytickers:
 
 
 
-    DF_pred.append(PREDICTION_TRAIN)
+    DF_pred.append(PREDICTIONS_FUTURE)
 
 
+# class my_dictionary(dict): 
+#     def __init__(self): 
+#         self = dict() 
 
-
+#     def add(self, key, value): 
+#         self[key] = value 
+  
+# resData = my_dictionary() 
+  
 for i in range(0, len(DF_pred)):
+    # resData.add(str(tickers[i]), str(DF_pred[i]))
     print(tickers[i])
     print("\n\n")
     print(DF_pred[i])
     print("\n")
     print("-"*45)
+# print(resData)
+# json_object = json.dumps(resData, indent = 4)
+# with open("sample.json", "w") as outfile: 
+#     outfile.write(json_object)

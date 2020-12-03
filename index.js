@@ -13,7 +13,7 @@ app.use(cors());
 app.use(bodyparser.json());
 
 app.post('/', (req, res)=>{
-    const python = spawn('python', ['sample.py', req.body.price, req.body.time]);
+    const python = spawn('python', ['finalpythoncode.py', req.body.price, req.body.time]);
     python.stdout.on('data', (data)=>{
         console.log('Data from python:: ');
         console.log(data.toString());
