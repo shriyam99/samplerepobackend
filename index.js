@@ -4,6 +4,7 @@ const {giveData} = require('./utils/giveSingleData');
 const {giveStocks} = require('./utils/getStockData');
 const {giveAnalysis} = require('./utils/getAnalysis');
 const {giveNews} = require('./utils/getNews');
+const datafile = require('./datafile.json');
 const cors = require('cors');
 const bodyparser = require('body-parser');
 const app = express();
@@ -22,6 +23,15 @@ app.post('/', (req, res)=>{
         })
     });
 });
+
+app.get('/getPredictedData', (req, res)=>{
+    let dataToSend = {};
+    Object.keys(datafile).forEach((company)=>{
+        let tempData = JSON.parse(datafile[company])["Open"];
+        dataToSend[company] = tempData;
+    })
+    res.json(dataToSend);
+})
 
 app.get('/getCompanyData/:company/:code/daily', async (req, res)=>{
     let data = await giveData(`https://www.moneycontrol.com/technical-analysis/${req.params.company}/${req.params.code}/daily`);

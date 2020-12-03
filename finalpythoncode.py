@@ -283,6 +283,7 @@ def para(duration, amount):
 
         DF_pred.append(PREDICTIONS_FUTURE)
 
+<<<<<<< HEAD
 
     # class my_dictionary(dict):
     #     def __init__(self):
@@ -327,3 +328,24 @@ def para(duration, amount):
 
 
     fileobj.close()
+=======
+class my_dictionary(dict):
+    def __init__(self):
+        self = dict()
+    def add(self, key, value):
+        self[key] = value
+
+resData = my_dictionary()
+
+for i in range(0, len(DF_pred)):
+    resData.add(tickers[i], DF_pred[i].to_json())
+    # print(tickers[i])
+    # print("\n\n")
+    # print(DF_pred[i])
+    # print("\n")
+    # print("-"*45)
+print(resData)
+json_object = json.dumps(resData, indent = 4)
+with open("datafile.json", "w") as outfile:
+    outfile.write(json_object)
+>>>>>>> 873a29c2b9cdea121821728cbbabd3e10700835f
