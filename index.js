@@ -1,10 +1,10 @@
 const express = require('express');
-const {spawn} = require('child_process');
+// const {spawn} = require('child_process');
 const {giveData} = require('./utils/giveSingleData');
 const {giveStocks} = require('./utils/getStockData');
 const {giveAnalysis} = require('./utils/getAnalysis');
 const {giveNews} = require('./utils/getNews');
-const datafile = require('./datafile.json');
+// const datafile = require('./datafile.json');
 const cors = require('cors');
 const bodyparser = require('body-parser');
 const app = express();
@@ -13,25 +13,16 @@ const PORT = process.env.PORT || 8081;
 app.use(cors());
 app.use(bodyparser.json());
 
-app.post('/', (req, res)=>{
-    const python = spawn('python', ['finalpythoncode.py', req.body.price, req.body.time]);
-    python.stdout.on('data', (data)=>{
-        console.log('Data from python:: ');
-        console.log(data.toString());
-        res.json({
-            body: data.toString()
-        })
-    });
-});
-
-app.get('/getPredictedData', (req, res)=>{
-    let dataToSend = {};
-    Object.keys(datafile).forEach((company)=>{
-        let tempData = JSON.parse(datafile[company])["Open"];
-        dataToSend[company] = tempData;
-    })
-    res.json(dataToSend);
-})
+// app.post('/', (req, res)=>{
+//     const {price, time} = req.body;
+//     let dataToSend = {body: []}
+//     let filtered = {};
+//     Object.keys(datafile).forEach((company)=>{
+//         let tempData = JSON.parse(datafile[company])["Open"];
+//         filtered[company] = tempData;
+//     })
+//     res.json(dataToSend);
+// })
 
 app.get('/getCompanyData/:company/:code/daily', async (req, res)=>{
     let data = await giveData(`https://www.moneycontrol.com/technical-analysis/${req.params.company}/${req.params.code}/daily`);
