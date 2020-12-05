@@ -309,10 +309,10 @@ def para(duration, amount):
 
 
 
-    resData = my_dictionary()
+#    resData = my_dictionary()
 
-    for i in range(0, len(DF_pred)):
-        resData.add(tickers[i], DF_pred[i].to_json())
+#    for i in range(0, len(DF_pred)):
+#        resData.add(tickers[i], DF_pred[i].to_json())
         # print(tickers[i])
         # print("\n\n")
         # print(DF_pred[i])
