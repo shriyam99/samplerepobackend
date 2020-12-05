@@ -172,10 +172,18 @@ def para(duration, amount):
     test_df = vectorizer.transform(headline)
     additional_mk = model.predict(test_df)
 
+    print("news headline out")
+    print(additional_mk)
+
+    
     ytickers = []
 
-    for i in sort_orders[:6]:
-        ytickers.append(i[0])
+    for i in range(0,4): #sort_orders[:6]:
+        if(additional_mk[i]):
+            ytickers.append((sort_orders[i])[0])
+
+    for i in range(4,7):
+        ytickers.append((sort_orders[i])[0])
 
     newls = []
     with open('alltickers.txt', 'r') as fp:
@@ -334,7 +342,7 @@ def para(duration, amount):
     dict = {}
     for i in range(0, len(DF_pred)):
         js = DF_pred[i].to_json()
-        dict[tickers[i]] = js
+        dict[ytickers[i]] = js
 
 
 
