@@ -174,6 +174,15 @@ for i in range(0, len(DF_pred)):
         js = DF_pred[i].to_json()
         dict[Tickers[i]] = js
 
+ls2= []
+for j in rmls:
+    ls2.append(Tickers[j])
+
+dict2 = {'data' : ls2}
+
+with open("Stockinloss.json", "w") as fo:
+    js_obj = json.dumps(dict2, indent=4)
+    fo.write(js_obj)
 
 with open("tableData.json", "w") as fileobj:
     js_obj = json.dumps(dict, indent=4)

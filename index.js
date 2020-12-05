@@ -16,7 +16,7 @@ app.use(cors());
 app.use(bodyparser.json());
 
 app.post('/', (req, res)=>{
-    const {time} = req.params;
+    const {time} = req.body;
     let date = moment().add(parseInt(time), 'days').format("DD-MM-YYYY");
     let dataToSend = {date};
     let filtered = {};
