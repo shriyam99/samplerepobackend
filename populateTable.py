@@ -44,6 +44,7 @@ def datetime_to_timestamp(x):
 
 
 DF_pred = []
+DF_train = []
 for tick in Tickers:
     ms = yf.Ticker(tick)
 
@@ -142,7 +143,7 @@ for tick in Tickers:
     #PREDICTION_TRAIN.head(3)
 
 
-
+    DF_train.append(PREDICTION_TRAIN)
     DF_pred.append(PREDICTIONS_FUTURE)
 
 
@@ -154,10 +155,27 @@ for i in range(0, len(DF_pred)):
     print("\n")
     print("-"*45)
 
-with open("tableData.json", "w") as fileobj:
-    for i in range(0, len(DF_pred)):
+rmls = []
+for j in range(0, len(DF_pred)):
+    ckval = (DF_train[j].tail(1))['Open'][0]
+
+    sr = DF_pred[j]['Open'][(DF_pred[j]['Open']) < (0.75*ckval)]
+
+    if(sr.count() >= 1):
+        rmls.append(j)
+
+
+print("Remove index list is:")
+print(rmls)
+
+dict = {}
+for i in range(0, len(DF_pred)):
+    if i not in rmls:
         js = DF_pred[i].to_json()
-        dict = {Tickers[i]: js}
-        js_obj = json.dumps(dict, indent=4)
-        print(js_obj)
-        fileobj.write(js_obj)
+        dict[Tickers[i]] = js
+
+
+with open("tableData.json", "w") as fileobj:
+    js_obj = json.dumps(dict, indent=4)
+    print(js_obj)
+    fileobj.write(js_obj)

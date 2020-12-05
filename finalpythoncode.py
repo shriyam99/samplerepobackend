@@ -300,17 +300,13 @@ def para(duration, amount):
         #PREDICTION_TRAIN.head(3)
         DF_pred.append(PREDICTIONS_FUTURE)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 #<<<<<<< HEAD
 
     # class my_dictionary(dict):
     #     def __init__(self):
     #         self = dict()
-=======
->>>>>>> 201eaa164aae2931e72e71a4419165dce5301658
-=======
->>>>>>> 201eaa164aae2931e72e71a4419165dce5301658
+
 
 
     resData = my_dictionary()
@@ -323,8 +319,6 @@ def para(duration, amount):
         # print("\n")
         # print("-"*45)
     # print(resData)
-<<<<<<< HEAD
-<<<<<<< HEAD
     # json_object = json.dumps(resData, indent = 4)
     # with open("sample.json", "w") as outfile:
     #     outfile.write(json_object)
@@ -337,14 +331,16 @@ def para(duration, amount):
 
     fileobj = open("new.json", 'w')
 
+    dict = {}
     for i in range(0, len(DF_pred)):
         js = DF_pred[i].to_json()
-        dict = {tickers[i]: js}
-        js_obj = json.dumps(dict, indent=4)
-        print(js_obj)
-        fileobj.write(js_obj)
+        dict[tickers[i]] = js
 
 
+
+    js_obj = json.dumps(dict, indent=4)
+    print(js_obj)
+    fileobj.write(js_obj)
 
 
     fileobj.close()
@@ -368,18 +364,13 @@ def para(duration, amount):
     json_object = json.dumps(resData, indent = 4)
     with open("datafile.json", "w") as outfile:
         outfile.write(json_object)
-#>>>>>>> 873a29c2b9cdea121821728cbbabd3e10700835f
-=======
-=======
->>>>>>> 201eaa164aae2931e72e71a4419165dce5301658
+
     json_object = json.dumps(resData, indent = 4)
     with open("datafile.json", "w") as outfile:
         outfile.write(json_object)
 
 # if __name__ == "__main__":
-<<<<<<< HEAD
+
 #     para(123, 456)
->>>>>>> 201eaa164aae2931e72e71a4419165dce5301658
-=======
+
 #     para(123, 456)
->>>>>>> 201eaa164aae2931e72e71a4419165dce5301658
