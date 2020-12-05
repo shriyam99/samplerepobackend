@@ -1,28 +1,46 @@
 const express = require('express');
-// const {spawn} = require('child_process');
+const moment = require('moment');
+const cors = require('cors');
+const bodyparser = require('body-parser');
+
 const {giveData} = require('./utils/giveSingleData');
 const {giveStocks} = require('./utils/getStockData');
 const {giveAnalysis} = require('./utils/getAnalysis');
 const {giveNews} = require('./utils/getNews');
-// const datafile = require('./datafile.json');
-const cors = require('cors');
-const bodyparser = require('body-parser');
+const datafile = require('./datafile.json');
+
 const app = express();
 const PORT = process.env.PORT || 8081;
 
 app.use(cors());
 app.use(bodyparser.json());
 
-// app.post('/', (req, res)=>{
-//     const {price, time} = req.body;
-//     let dataToSend = {body: []}
-//     let filtered = {};
-//     Object.keys(datafile).forEach((company)=>{
-//         let tempData = JSON.parse(datafile[company])["Open"];
-//         filtered[company] = tempData;
-//     })
-//     res.json(dataToSend);
-// })
+app.post('/', (req, res)=>{
+    const {time} = req.params;
+    let date = moment().add(parseInt(time), 'days').format("DD-MM-YYYY");
+    let dataToSend = {date};
+    let filtered = {};
+    let maxTimeStamp;
+    Object.keys(datafile).forEach((company)=>{
+        let tempData = JSON.parse(datafile[company])["Open"];
+        let companyTempData = {};
+        Object.keys(tempData).forEach((timeStamp, index)=>{
+            companyTempData[moment.unix(parseInt(timeStamp)/1000).format("DD-MM-YYYY")] = tempData[timeStamp];
+            if (index==0) maxTimeStamp = timeStamp;
+            else maxTimeStamp = Math.max(maxTimeStamp, timeStamp);
+        });
+        filtered[company] = companyTempData;
+    })
+    let lastDate = moment.unix(parseInt(maxTimeStamp)/1000).format("DD-MM-YYYY");
+    let dataList = {};
+    Object.keys(filtered).forEach((company)=>{
+        let companyData = filtered[company];
+        let res = !!companyData[date] ? companyData[date] : companyData[lastDate];
+        dataList[company] = res;
+    });
+    dataToSend["data"] = dataList;
+    res.json(dataToSend);
+})
 
 app.get('/getCompanyData/:company/:code/daily', async (req, res)=>{
     let data = await giveData(`https://www.moneycontrol.com/technical-analysis/${req.params.company}/${req.params.code}/daily`);

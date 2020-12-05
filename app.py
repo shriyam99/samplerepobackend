@@ -8,14 +8,10 @@ CORS(app)
 
 @app.route("/<int:dur>/<int:amt>")
 def index(dur, amt):
-    #duration = dur
-    #amount = amt
-    #run([sys.executable, 'finalpythoncode.py'])
-    print(dur)
     print(amt)
+    print(dur)
     para(dur, amt)
-    return "Hello"
-
+    return "data_fetched"
 
 if __name__=="__main__":
     app.run(debug=True)
