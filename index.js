@@ -17,6 +17,7 @@ app.use(bodyparser.json());
 
 app.post('/', (req, res)=>{
     const {time} = req.body;
+    console.log(time);
     let date = moment().add(parseInt(time), 'days').format("DD-MM-YYYY");
     let dataToSend = {date};
     let filtered = {};
@@ -40,7 +41,24 @@ app.post('/', (req, res)=>{
     });
     dataToSend["data"] = dataList;
     res.json(dataToSend);
-})
+});
+
+app.get('/search/:company', (req, res)=>{
+    let {company} = req.params;
+    company = company.toUpperCase();
+    company = company+".NS";
+    let filtered = {};
+    Object.keys(datafile).forEach((company)=>{
+        let tempData = JSON.parse(datafile[company])["Open"];
+        let companyTempData = {};
+        Object.keys(tempData).forEach((timeStamp, index)=>{
+            companyTempData[moment.unix(parseInt(timeStamp)/1000).format("DD-MM-YYYY")] = tempData[timeStamp];
+        });
+        filtered[company] = companyTempData;
+    })
+    res.json(filtered[company]);
+});
+
 
 app.get('/getCompanyData/:company/:code/daily', async (req, res)=>{
     let data = await giveData(`https://www.moneycontrol.com/technical-analysis/${req.params.company}/${req.params.code}/daily`);
