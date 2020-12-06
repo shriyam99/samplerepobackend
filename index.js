@@ -1,71 +1,36 @@
 const express = require('express');
-const moment = require('moment');
-const cors = require('cors');
-const bodyparser = require('body-parser');
-
+// const {spawn} = require('child_process');
 const {giveData} = require('./utils/giveSingleData');
 const {giveStocks} = require('./utils/getStockData');
 const {giveAnalysis} = require('./utils/getAnalysis');
 const {giveNews} = require('./utils/getNews');
-const datafile = require('./datafile.json');
-
+// const datafile = require('./datafile.json');
+const cors = require('cors');
+const bodyparser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT || 8081;
 
 app.use(cors());
 app.use(bodyparser.json());
 
-app.post('/', (req, res)=>{
-    const {time} = req.body;
-    console.log(time);
-    let date = moment().add(parseInt(time), 'days').format("DD-MM-YYYY");
-    let dataToSend = {date};
-    let filtered = {};
-    let maxTimeStamp;
-    Object.keys(datafile).forEach((company)=>{
-        let tempData = JSON.parse(datafile[company])["Open"];
-        let companyTempData = {};
-        Object.keys(tempData).forEach((timeStamp, index)=>{
-            companyTempData[moment.unix(parseInt(timeStamp)/1000).format("DD-MM-YYYY")] = tempData[timeStamp];
-            if (index==0) maxTimeStamp = timeStamp;
-            else maxTimeStamp = Math.max(maxTimeStamp, timeStamp);
-        });
-        filtered[company] = companyTempData;
-    })
-    let lastDate = moment.unix(parseInt(maxTimeStamp)/1000).format("DD-MM-YYYY");
-    let dataList = {};
-    Object.keys(filtered).forEach((company)=>{
-        let companyData = filtered[company];
-        let res = !!companyData[date] ? companyData[date] : companyData[lastDate];
-        dataList[company] = res;
-    });
-    dataToSend["data"] = dataList;
-    res.json(dataToSend);
-});
-
-app.get('/search/:company', (req, res)=>{
-    let {company} = req.params;
-    company = company.toUpperCase();
-    company = company+".NS";
-    let filtered = {};
-    Object.keys(datafile).forEach((company)=>{
-        let tempData = JSON.parse(datafile[company])["Open"];
-        let companyTempData = {};
-        Object.keys(tempData).forEach((timeStamp, index)=>{
-            companyTempData[moment.unix(parseInt(timeStamp)/1000).format("DD-MM-YYYY")] = tempData[timeStamp];
-        });
-        filtered[company] = companyTempData;
-    })
-    res.json(filtered[company]);
-});
-
+// app.post('/', (req, res)=>{
+//     const {price, time} = req.body;
+//     let dataToSend = {body: []}
+//     let filtered = {};
+//     Object.keys(datafile).forEach((company)=>{
+//         let tempData = JSON.parse(datafile[company])["Open"];
+//         filtered[company] = tempData;
+//     })
+//     res.json(dataToSend);
+// })
 
 app.get('/getCompanyData/:company/:code/daily', async (req, res)=>{
     let data = await giveData(`https://www.moneycontrol.com/technical-analysis/${req.params.company}/${req.params.code}/daily`);
     res.json({
         msg: "Data received",
         name: data.name,
-        data: data.data
+        data: data.data,
+        price: data.price
     })
 });
 
