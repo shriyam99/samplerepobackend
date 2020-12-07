@@ -57,59 +57,73 @@ def para(duration, amount):
         parsed = json.loads(d)
         ans = 0
         cmpName = parsed['name']
-        for l in parsed['data']:
-            t = l["period"]
-            lvl = l["level"]
-            ind = l["indication"]
-            if(t == "MACD(12,26,9)"):
-                if(lvl > '0'):
-                    cal.append("Bullish")
+        price = parsed['price']
+        tmp = yf.Ticker(cmpName+".NS")
+        y = tmp.info
+        eps = y["trailingEps"]
+        if(float(price) <= float(amount)):
+            for l in parsed['data']:
+                t = l["period"]
+                lvl = l["level"]
+                ind = l["indication"]
+                if(t == "MACD(12,26,9)"):
+                    if(lvl > '0'):
+                        cal.append("Bullish")
+                    else:
+                        cal.append("Bearish")
+
+                if(t == "RSI(14)"):
+                    if(lvl > '70'):
+                        cal.append("Bearish")
+                    elif(lvl < '30'):
+                        cal.append("Bullish")
+                    else:
+                        cal.append("Neutral")
+
+
+                if(t == "Stochastic(20,3)"):
+                    if(lvl > '80'):
+                        cal.append("Bearish")
+                    else:
+                        cal.append("Bullish")
+
+                if(t == "ROC(20)"):
+                     if(lvl > '0'):
+                        cal.append("Bullish")
+                     else:
+                        cal.append("Bearish")
+
+
+                if(t == "CCI(20)"):
+                    if(lvl > '100'):
+                        cal.append("Bearish")
+                    elif(lvl > '100'):
+                        cal.append("Bullish")
+                    else:
+                        cal.append("Bearish")
+
+
+                if(t == "RSC (6 months)"):
+                    if(ind =="Outperformer"):
+                        cal.append("Bullish")
+                    else:
+                        cal.append("Bearish")
+
+
+                if(t == "ADX(14)"):
+                    if(lvl > "25"):
+                        cal.append("Bullish")
+                    else:
+                        cal.append("Bearish")
+                        
+            ans = 0
+            
+            if(duration > 30):
+                if(eps < 0):
+                    cal.append("Bearish")
                 else:
-                    cal.append("Bearish")
-
-            if(t == "RSI(14)"):
-                if(lvl > '70'):
-                    cal.append("Bearish")
-                elif(lvl < '30'):
-                    cal.append("Bullish")
-                else:
-                    cal.append("Neutral")
-
-
-            if(t == "Stochastic(20,3)"):
-                if(lvl > '80'):
-                    cal.append("Bearish")
-                else:
-                    cal.append("Bullish")
-
-            if(t == "ROC(20)"):
-                 if(lvl > '0'):
-                    cal.append("Bullish")
-                 else:
-                    cal.append("Bearish")
-
-
-            if(t == "CCI(20)"):
-                if(lvl > '100'):
-                    cal.append("Bearish")
-                elif(lvl > '100'):
-                    cal.append("Bullish")
-                else:
-                    cal.append("Bearish")
-
-
-            if(t == "RSC (6 months)"):
-                if(ind =="Outperformer"):
-                    cal.append("Bullish")
-                else:
-                    cal.append("Bearish")
-
-
-            if(t == "ADX(14)"):
-                if(lvl > "25"):
-                    cal.append("Bullish")
-                else:
-                    cal.append("Bearish")
+                    cal.append("Bullsih")
+  
 
         for i in cal:
             if(i == "Bullish"):
@@ -169,7 +183,7 @@ def para(duration, amount):
     print("news headline out")
     print(additional_mk)
 
-    
+
     ytickers = []
 
     for i in range(0,4): #sort_orders[:6]:

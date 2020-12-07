@@ -8,6 +8,7 @@ const {giveStocks} = require('./utils/getStockData');
 const {giveAnalysis} = require('./utils/getAnalysis');
 const {giveNews} = require('./utils/getNews');
 const datafile = require('./datafile.json');
+const tableData = require('./tableData.json');
 
 const app = express();
 const PORT = process.env.PORT || 8081;
@@ -48,8 +49,8 @@ app.get('/search/:company', (req, res)=>{
     company = company.toUpperCase();
     company = company+".NS";
     let filtered = {};
-    Object.keys(datafile).forEach((company)=>{
-        let tempData = JSON.parse(datafile[company])["Open"];
+    Object.keys(tableData).forEach((company)=>{
+        let tempData = JSON.parse(tableData[company])["Open"];
         let companyTempData = {};
         Object.keys(tempData).forEach((timeStamp, index)=>{
             companyTempData[moment.unix(parseInt(timeStamp)/1000).format("DD-MM-YYYY")] = tempData[timeStamp];
@@ -65,7 +66,8 @@ app.get('/getCompanyData/:company/:code/daily', async (req, res)=>{
     res.json({
         msg: "Data received",
         name: data.name,
-        data: data.data
+        data: data.data,
+        price: data.price
     })
 });
 
